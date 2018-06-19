@@ -1,5 +1,29 @@
 {
   "expo": {
-    "sdkVersion": "27.0.0"
+    "sdkVersion": "27.0.0",
+    "name": "CardShop",
+    "description": "CardShop Client APP",
+    "privacy": "public",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#b33b3c",
+    "icon": "./Src/Images/Icon.png",
+    "splash": {
+      "image": "./Src/Images/Conexion.png",
+      "resizeMode": "cover"
+    },
+    "packagerOpts": {
+      "assetExts": [
+        "ttf"
+      ]
+    },
+    "ios": {
+      "bundleIdentifier": "com.cardshop.cardshop",
+      "supportsTablet": false
+    },
+    "android": {
+      "package": "com.cardshop.cardshop",
+      "versionCode": 1
+    }
   }
 }
