@@ -20,6 +20,8 @@
   },
   "dependencies": {
     "expo": "^27.0.1",
+    "firebase": "^5.0.4",
+    "google-translate-api": "^2.3.0",
     "native-base": "^2.5.2",
     "prop-types": "^15.6.1",
     "react": "16.3.1",

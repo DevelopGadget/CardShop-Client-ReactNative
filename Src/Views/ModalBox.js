@@ -27,9 +27,9 @@ export default class ModalBox extends React.Component {
           </Item>
         </Header>
         <Grid style={{ flex: 1 }}>
-          <Col size={1} style={{ justifyContent: 'center', marginLeft: 20 }}>
+          <Col size={1} style={{ justifyContent: 'center', marginLeft: 60 }}>
             {this.props.SpinnerComp ? <Spinner color='red' size='large' /> : null}
-            {this.props.Image ? <Thumbnail source={{ uri: this.props.ImageSet }} large/> : null}
+            {this.props.Image ? <Thumbnail source={{ uri: this.props.ImageSet }}/> : null}
           </Col>
           <Col size={2} style={{ justifyContent: 'center' }}>
             <Text style={{ color: 'black' }}>{this.props.Text}</Text>
