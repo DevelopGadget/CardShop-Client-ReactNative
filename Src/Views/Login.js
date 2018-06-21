@@ -1,9 +1,10 @@
 import React from 'react';
-import { ImageBackground, StatusBar, NetInfo, Image, View } from 'react-native';
+import { ImageBackground, StatusBar, NetInfo } from 'react-native';
 import { Container, Content, Item, Icon, Input, Form, Footer, Button, Text, Spinner, Root, View } from 'native-base';
-import Principal from '../Views/Principal';
 import ModalBox from '../Views/ModalBox';
+import { createTransition, SlideLeft } from 'react-native-transition';
 
+const Transition = createTransition(SlideLeft);
 var LoginImage, Conexion;
 
 export default class Login extends React.Component {
@@ -12,14 +13,13 @@ export default class Login extends React.Component {
     this.state = { Font: false, Network: true, User: { Username: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: '' };
   }
   componentDidMount() {
-    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
     StatusBar.setHidden(true);
     LoginImage = require('../Images/Login.jpg');
     Conexion = require('../Images/Conexion.png');
   }
+
   handleConnectionChange = () => {
     NetInfo.isConnected.fetch().then(isConnected => {
-      this.setState({ Network: isConnected });
     });
   }
   async componentWillMount() {
@@ -38,53 +38,46 @@ export default class Login extends React.Component {
     }
   }
   render() {
-    if (this.state.Network) {
-      if (this.state.Font) {
-        return (
-          <ImageBackground source={LoginImage} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
-            <Container>
-              <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}>
-                <Form style={{ marginRight: 10 }}>
-                  <Item>
-                    <Icon active type='FontAwesome' name='user-circle' style={{ color: 'white' }} />
-                    <Input style={{ color: 'white' }} placeholder="Usuario" onChangeText={(Username) => this.setState({ User: { Username: Username, Password: this.state.User.Password }, ModalView: false })} />
-                  </Item>
-                  <Item>
-                    <Icon active type='MaterialIcons' name='vpn-key' style={{ color: 'white', fontSize: 20, }} />
-                    <Input style={{ color: 'white' }} secureTextEntry={true} placeholder="Contraseña" onChangeText={(Password) => this.setState({ User: { Username: this.state.User.Username, Password: Password }, ModalView: false })} />
-                  </Item>
-                </Form>
-                <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-                  <Button transparent onPress={}>
-                    <Text>Restaurar Contraseña</Text>
-                  </Button>
-                </View>
-                <Button block rounded style={{ marginTop: 40, backgroundColor: '#b33b3c' }} onPress={this.Login.bind(this)}>
-                  <Text>Login</Text>
-                </Button>
-                <Button transparent onPress={}>
-                  <Text>Registrar</Text>
-                </Button>
-              </Content>
-              <Footer style={{ backgroundColor: 'rgba(0,0,0,0)', marginTop: 20 }} />
-            </Container>
-            {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
-          </ImageBackground>
-        );
-      } else {
-        return (
+    if (this.state.Font) {
+      return (
+        <ImageBackground source={LoginImage} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
           <Container>
-            <Content contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
-              <Spinner color='blue' size='large' />
+            <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}>
+              <Form style={{ marginRight: 15, marginTop: 20 }}>
+                <Item>
+                  <Icon active type='FontAwesome' name='user-circle' style={{ color: 'white' }} />
+                  <Input style={{ color: 'white' }} placeholder="Usuario" onChangeText={(Username) => this.setState({ User: { Username: Username, Password: this.state.User.Password }, ModalView: false })} />
+                </Item>
+                <Item>
+                  <Icon active type='MaterialIcons' name='vpn-key' style={{ color: 'white', fontSize: 20, }} />
+                  <Input style={{ color: 'white' }} secureTextEntry={true} placeholder="Contraseña" onChangeText={(Password) => this.setState({ User: { Username: this.state.User.Username, Password: Password }, ModalView: false })} />
+                </Item>
+              </Form>
+              <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 10 }}>
+                <Button transparent>
+                  <Text style={{ color: 'white' }}>Restaurar Contraseña</Text>
+                </Button>
+              </View>
+              <Button block rounded style={{ backgroundColor: '#b33b3c' }} onPress={this.Login.bind(this)}>
+                <Text>Login</Text>
+              </Button>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20}}>
+                <Button transparent>
+                  <Text style={{ color: 'white' }}>Registrar</Text>
+                </Button>
+              </View>
             </Content>
           </Container>
-        );
-      }
+          {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
+        </ImageBackground>
+      );
     } else {
       return (
-        <Root>
-          <Image source={Conexion} resizeMode='cover' style={{ width: '100%', height: '100%' }} />
-        </Root>
+        <Container>
+          <Content contentContainerStyle={{ flex: 1, justifyContent: 'center' }}>
+            <Spinner color='blue' size='large' />
+          </Content>
+        </Container>
       );
     }
   }
