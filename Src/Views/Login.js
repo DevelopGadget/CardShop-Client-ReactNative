@@ -35,7 +35,7 @@ export default class Login extends React.Component {
               <Form style={{ marginRight: 15, marginTop: 20 }}>
                 <Item>
                   <Icon active type='FontAwesome' name='user-circle' style={{ color: 'white' }} />
-                  <Input style={{ color: 'white' }} placeholder="Usuario" onChangeText={(Username) => this.setState({ User: { Username: Username, Password: this.state.User.Password }, ModalView: false })} />
+                  <Input style={{ color: 'white' }} placeholder="Correo" onChangeText={(Username) => this.setState({ User: { Username: Username, Password: this.state.User.Password }, ModalView: false })} />
                 </Item>
                 <Item>
                   <Icon active type='MaterialIcons' name='vpn-key' style={{ color: 'white', fontSize: 20, }} />
@@ -51,7 +51,7 @@ export default class Login extends React.Component {
                 <Text>Login</Text>
               </Button>
               <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20}}>
-                <Button transparent>
+                <Button transparent onPress={() => this.props.navigation.push('Registro')}>
                   <Text style={{ color: 'white' }}>Registrar</Text>
                 </Button>
               </View>

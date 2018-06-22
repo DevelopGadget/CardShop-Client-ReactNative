@@ -1,5 +1,6 @@
 import React from 'react';
 import Login from './Src/Views/Login';
+import Registro from './Src/Views/Registro';
 import { createStackNavigator } from 'react-navigation';
 import { ImageBackground, NetInfo } from 'react-native';
 
@@ -8,7 +9,6 @@ export default class App extends React.Component {
     return (<AppStackNavigation/>);
   }
 }
-
 export class Conexion extends React.Component {
   constructor(props) {
     super(props);
@@ -41,4 +41,5 @@ export class Conexion extends React.Component {
 const AppStackNavigation = createStackNavigator({
   Conexion: { screen: Conexion, navigationOptions: () => ({header: null}) },
   Login: { screen: Login, navigationOptions: () => ({header: null}) },
+  Registro: { screen: Registro, navigationOptions: () => ({header: null}) },
 })
