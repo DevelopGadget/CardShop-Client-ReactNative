@@ -1,11 +1,7 @@
 import React from 'react';
-import { ImageBackground, StatusBar, NetInfo } from 'react-native';
-import { Container, Content, Item, Icon, Input, Form, Footer, Button, Text, Spinner, Root, View } from 'native-base';
+import { ImageBackground, StatusBar } from 'react-native';
+import { Container, Content, Item, Icon, Input, Form, Button, Text, Spinner, View } from 'native-base';
 import ModalBox from '../Views/ModalBox';
-import { createTransition, SlideLeft } from 'react-native-transition';
-
-const Transition = createTransition(SlideLeft);
-var LoginImage, Conexion;
 
 export default class Login extends React.Component {
   constructor(props) {
@@ -14,13 +10,6 @@ export default class Login extends React.Component {
   }
   componentDidMount() {
     StatusBar.setHidden(true);
-    LoginImage = require('../Images/Login.jpg');
-    Conexion = require('../Images/Conexion.png');
-  }
-
-  handleConnectionChange = () => {
-    NetInfo.isConnected.fetch().then(isConnected => {
-    });
   }
   async componentWillMount() {
     await Expo.Font.loadAsync({
@@ -40,7 +29,7 @@ export default class Login extends React.Component {
   render() {
     if (this.state.Font) {
       return (
-        <ImageBackground source={LoginImage} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
+        <ImageBackground source={{uri: 'https://image.ibb.co/bWnJVT/Login.png'}} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
           <Container>
             <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}>
               <Form style={{ marginRight: 15, marginTop: 20 }}>
