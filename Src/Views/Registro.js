@@ -2,12 +2,25 @@ import React from 'react';
 import { ImageBackground } from 'react-native';
 import { Container, Content, Item, Icon, Input, Form, Button, Text, Spinner, View } from 'native-base';
 import ModalBox from '../Views/ModalBox';
+import Users from '../Firebase/Users';
 
 export default class Registro extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = { User: { Nombre: '', Apellido: '', Email: '', Password: '' } }
+  }
+
+  Registrar = () =>{
+    Users.Crear(this.state.User).then((User) => {
+
+    }).catch((error) =>{
+      translate(error.errorInfo.message, { to: 'es' }).then(Response => {
+        console.log(Response.text);
+      }).catch(err => {
+        console.log(error.message);
+      });
+    });
   }
 
   render() {
@@ -33,7 +46,7 @@ export default class Registro extends React.Component {
                 <Input style={{ color: 'white' }} secureTextEntry={true} placeholder="Contraseña" onChangeText={(Password) => this.setState({ User: { Email: this.state.User.Email, Password: Password, Nombre: this.state.User.Nombre, Apellido: this.state.User.Apellido }, ModalView: false })} />
               </Item>
             </Form>
-            <Button block rounded style={{ backgroundColor: '#b33b3c' }}>
+            <Button block rounded style={{ backgroundColor: '#b33b3c' }} onPress={this.Registrar.bind(this)}>
                 <Text>Registrar</Text>
               </Button>
           </Content>
