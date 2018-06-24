@@ -1,14 +1,25 @@
 import React from 'react';
 import Login from './Src/Views/Login';
-import Registro from './Src/Views/Registro';
 import { createStackNavigator } from 'react-navigation';
-import { ImageBackground, NetInfo } from 'react-native';
+import { ImageBackground, NetInfo, BackHandler } from 'react-native';
+import Registro from './Src/Views/Registro';
 
 export default class App extends React.Component {
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', function () {
+      BackHandler.exitApp();
+    });
+    console.ignoredYellowBox = [
+      'Setting a timer'
+    ];
+  }
   render() {
-    return (<AppStackNavigation/>);
+    return (
+      <AppStackNavigation />
+    );
   }
 }
+
 export class Conexion extends React.Component {
   constructor(props) {
     super(props);
@@ -23,7 +34,7 @@ export class Conexion extends React.Component {
   handleConnectionChange = () => {
     NetInfo.isConnected.fetch().then(isConnected => {
       if (isConnected && this.state.Frist == false) {
-        this.props.navigation.push('Login');
+        this.props.navigation.navigate('Login');
       }
       else if (!isConnected) {
         this.setState({ Frist: false });
@@ -39,7 +50,7 @@ export class Conexion extends React.Component {
 }
 
 const AppStackNavigation = createStackNavigator({
-  Conexion: { screen: Conexion, navigationOptions: () => ({header: null}) },
-  Login: { screen: Login, navigationOptions: () => ({header: null}) },
-  Registro: { screen: Registro, navigationOptions: () => ({header: null}) },
+  Conexion: { screen: Conexion, navigationOptions: () => ({ header: null }) },
+  Login: { screen: Login, navigationOptions: () => ({ header: null }) },
+  Registro: { screen: Registro, navigationOptions: () => ({ header: null }) },
 })

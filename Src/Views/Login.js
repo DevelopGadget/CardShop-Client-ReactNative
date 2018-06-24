@@ -6,7 +6,7 @@ import ModalBox from '../Views/ModalBox';
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Font: false, Network: true, User: { Username: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: '' };
+    this.state = { Font: false, User: { Username: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: '' };
   }
   componentDidMount() {
     StatusBar.setHidden(true);
