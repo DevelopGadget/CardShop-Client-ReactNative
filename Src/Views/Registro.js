@@ -20,7 +20,7 @@ export default class Registro extends React.Component {
       await _Client.Auth.createUserWithEmailAndPassword(this.state.User.Email, this.state.User.Password).then(() => {
         _Client.Auth.currentUser.updateProfile({ displayName: this.state.User.Nombre + ' ' + this.state.User.Apellido }).then(() => {
           _Client.Auth.currentUser.sendEmailVerification().then(() => {
-            this.setState({ ModalTexto: 'Revise su email para la verificación', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+            this.setState({ ModalTexto: 'Revise su email para la verificación', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png', User: { Nombre: '', Apellido: '', Email: '', Password: '' } });
           })
         });
       }).catch((error) => {
@@ -37,19 +37,19 @@ export default class Registro extends React.Component {
             <Form style={{ marginRight: 15 }}>
               <Item style={{ marginBottom: 20 }}>
                 <Icon active type='FontAwesome' name='user' style={{ color: 'white', fontSize: 20, }} />
-                <Input style={{ color: 'white' }} placeholder="Nombre" onChangeText={(Nombre) => this.setState({ User: { Email: this.state.User.Email, Password: this.state.User.Password, Nombre: Nombre, Apellido: this.state.User.Apellido }, ModalView: false })} />
+                <Input style={{ color: 'white' }} placeholder="Nombre" onChangeText={(Nombre) => this.setState({ User: { Email: this.state.User.Email, Password: this.state.User.Password, Nombre: Nombre, Apellido: this.state.User.Apellido }, ModalView: false })} value={this.state.User.Nombre} />
               </Item>
               <Item style={{ marginBottom: 20 }}>
                 <Icon active type='FontAwesome' name='user' style={{ color: 'white', fontSize: 20, }} />
-                <Input style={{ color: 'white' }} placeholder="Apellido" onChangeText={(Apellido) => this.setState({ User: { Email: this.state.User.Email, Password: this.state.User.Password, Nombre: this.state.User.Nombre, Apellido: Apellido }, ModalView: false })} />
+                <Input style={{ color: 'white' }} placeholder="Apellido" onChangeText={(Apellido) => this.setState({ User: { Email: this.state.User.Email, Password: this.state.User.Password, Nombre: this.state.User.Nombre, Apellido: Apellido }, ModalView: false })} value={this.state.User.Apellido} />
               </Item>
               <Item style={{ marginBottom: 20 }}>
                 <Icon active type='Entypo' name='email' style={{ color: 'white' }} />
-                <Input style={{ color: 'white' }} placeholder="Email" onChangeText={(Email) => this.setState({ User: { Email: Email, Password: this.state.User.Password, Nombre: this.state.User.Nombre, Apellido: this.state.User.Apellido }, ModalView: false })} />
+                <Input style={{ color: 'white' }} placeholder="Email" onChangeText={(Email) => this.setState({ User: { Email: Email, Password: this.state.User.Password, Nombre: this.state.User.Nombre, Apellido: this.state.User.Apellido }, ModalView: false })} value={this.state.User.Email} />
               </Item>
               <Item style={{ marginBottom: 40 }}>
                 <Icon active type='MaterialIcons' name='vpn-key' style={{ color: 'white', fontSize: 20, }} />
-                <Input style={{ color: 'white' }} secureTextEntry={true} placeholder="Contraseña" onChangeText={(Password) => this.setState({ User: { Email: this.state.User.Email, Password: Password, Nombre: this.state.User.Nombre, Apellido: this.state.User.Apellido }, ModalView: false })} />
+                <Input style={{ color: 'white' }} secureTextEntry={true} placeholder="Contraseña" onChangeText={(Password) => this.setState({ User: { Email: this.state.User.Email, Password: Password, Nombre: this.state.User.Nombre, Apellido: this.state.User.Apellido }, ModalView: false })} value={this.state.User.Password} />
               </Item>
             </Form>
             <Button block rounded style={{ backgroundColor: '#b33b3c' }} onPress={this.Registrar.bind(this)}>
