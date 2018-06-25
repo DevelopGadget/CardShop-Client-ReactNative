@@ -21,20 +21,30 @@ export default class Login extends React.Component {
     });
     this.setState({ Font: true });
   }
+
   Login = async () => {
     if (this.state.User.Email.length <= 0 || this.state.User.Password.length <= 0) {
       this.setState({ ModalTexto: 'Se requieren los campos', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
     } else {
       this.setState({ ModalTexto: 'Espere validando ingreso...', ModalView: true, ModalImage: false });
+      _Client.Auth.signInWithEmailAndPassword(this.state.User.Email, this.state.User.Password).then((User) => {
+        if(User.user.emailVerified){
+          this.setState({ ModalTexto: 'Logueado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+        }else{
+          this.setState({ ModalTexto: 'Se necesita estar verificado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
+        }
+      }).catch((error) => {
+        console.log(error.message);
+      })
     }
   }
 
   Restaurar = async () => {
-    if(this.state.User.Email.length <= 0){
+    if (this.state.User.Email.length <= 0) {
       this.setState({ ModalTexto: 'Escriba el email en el campo', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
-    }else{
+    } else {
       this.setState({ ModalTexto: 'Espere validando email', ModalView: true, ModalImage: false });
-      await _Client.Auth.sendPasswordResetEmail(this.state.User.Email).then(() =>{
+      await _Client.Auth.sendPasswordResetEmail(this.state.User.Email).then(() => {
         this.setState({ ModalTexto: 'Correo enviado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
       }).catch((error) => {
         this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
@@ -45,7 +55,7 @@ export default class Login extends React.Component {
   render() {
     if (this.state.Font) {
       return (
-        <ImageBackground source={{uri: 'https://image.ibb.co/bWnJVT/Login.png'}} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
+        <ImageBackground source={{ uri: 'https://image.ibb.co/bWnJVT/Login.png' }} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
           <Container>
             <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}>
               <Form style={{ marginRight: 15, marginTop: 20 }}>
@@ -60,15 +70,15 @@ export default class Login extends React.Component {
               </Form>
               <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 10 }}>
                 <Button transparent onPress={this.Restaurar.bind(this)}>
-                  <Text style={{ color: 'white' }}>Restaurar Contraseña</Text>
+                  <Text style={{ color: 'white' }}>¿Olvidaste Contraseña?</Text>
                 </Button>
               </View>
               <Button block rounded style={{ backgroundColor: '#b33b3c' }} onPress={this.Login.bind(this)}>
                 <Text>Login</Text>
               </Button>
-              <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20}}>
+              <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 20 }}>
                 <Button transparent onPress={() => this.props.navigation.push('Registro')}>
-                  <Text style={{ color: 'white' }}>Registrar</Text>
+                  <Text style={{ color: 'white' }}>¿No tienes cuenta?</Text>
                 </Button>
               </View>
             </Content>
