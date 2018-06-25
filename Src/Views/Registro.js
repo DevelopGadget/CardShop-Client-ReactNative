@@ -4,7 +4,6 @@ import { Container, Content, Item, Icon, Input, Form, Button, Text, View } from 
 import ModalBox from '../Views/ModalBox';
 
 const _Client = require('../Firebase/Firebase');
-const translate = require('google-translate-api');
 
 export default class Registro extends React.Component {
 
@@ -20,7 +19,9 @@ export default class Registro extends React.Component {
       this.setState({ ModalTexto: 'Espere...', ModalView: true, ModalImage: false });
       await _Client.Auth.createUserWithEmailAndPassword(this.state.User.Email, this.state.User.Password).then(() => {
         _Client.Auth.currentUser.updateProfile({ displayName: this.state.User.Nombre + ' ' + this.state.User.Apellido }).then(() => {
-          this.setState({ ModalTexto: 'Se ha registrado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+          _Client.Auth.currentUser.sendEmailVerification().then(() => {
+            this.setState({ ModalTexto: 'Revise su email para la verificación', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+          })
         });
       }).catch((error) => {
         this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
@@ -54,7 +55,7 @@ export default class Registro extends React.Component {
             <Button block rounded style={{ backgroundColor: '#b33b3c' }} onPress={this.Registrar.bind(this)}>
               <Text>Registrar</Text>
             </Button>
-            <View style={{ justifyContent: 'center' }}>
+            <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
               <Button transparent onPress={() => this.props.navigation.push('Login')}>
                 <Text style={{ color: 'white' }}>Login</Text>
               </Button>

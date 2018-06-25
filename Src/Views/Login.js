@@ -3,10 +3,12 @@ import { ImageBackground, StatusBar } from 'react-native';
 import { Container, Content, Item, Icon, Input, Form, Button, Text, Spinner, View } from 'native-base';
 import ModalBox from '../Views/ModalBox';
 
+const _Client = require('../Firebase/Firebase');
+
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Font: false, User: { Username: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: '' };
+    this.state = { Font: false, User: { Email: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: '' };
   }
   componentDidMount() {
     StatusBar.setHidden(true);
@@ -19,13 +21,27 @@ export default class Login extends React.Component {
     });
     this.setState({ Font: true });
   }
-  Login = () => {
-    if (this.state.User.Username.length <= 0 || this.state.User.Password.length <= 0) {
+  Login = async () => {
+    if (this.state.User.Email.length <= 0 || this.state.User.Password.length <= 0) {
       this.setState({ ModalTexto: 'Se requieren los campos', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
     } else {
       this.setState({ ModalTexto: 'Espere validando ingreso...', ModalView: true, ModalImage: false });
     }
   }
+
+  Restaurar = async () => {
+    if(this.state.User.Email.length <= 0){
+      this.setState({ ModalTexto: 'Escriba el email en el campo', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
+    }else{
+      this.setState({ ModalTexto: 'Espere validando email', ModalView: true, ModalImage: false });
+      await _Client.Auth.sendPasswordResetEmail(this.state.User.Email).then(() =>{
+        this.setState({ ModalTexto: 'Correo enviado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+      }).catch((error) => {
+        this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
+      })
+    }
+  }
+
   render() {
     if (this.state.Font) {
       return (
@@ -34,16 +50,16 @@ export default class Login extends React.Component {
             <Content padder contentContainerStyle={{ flex: 1, justifyContent: 'flex-end' }}>
               <Form style={{ marginRight: 15, marginTop: 20 }}>
                 <Item>
-                  <Icon active type='FontAwesome' name='user-circle' style={{ color: 'white' }} />
-                  <Input style={{ color: 'white' }} placeholder="Correo" onChangeText={(Username) => this.setState({ User: { Username: Username, Password: this.state.User.Password }, ModalView: false })} />
+                  <Icon active type='Entypo' name='email' style={{ color: 'white' }} />
+                  <Input style={{ color: 'white' }} placeholder="Correo" onChangeText={(Email) => this.setState({ User: { Email: Email, Password: this.state.User.Password }, ModalView: false })} />
                 </Item>
                 <Item>
                   <Icon active type='MaterialIcons' name='vpn-key' style={{ color: 'white', fontSize: 20, }} />
-                  <Input style={{ color: 'white' }} secureTextEntry={true} placeholder="Contraseña" onChangeText={(Password) => this.setState({ User: { Username: this.state.User.Username, Password: Password }, ModalView: false })} />
+                  <Input style={{ color: 'white' }} secureTextEntry={true} placeholder="Contraseña" onChangeText={(Password) => this.setState({ User: { Email: this.state.User.Email, Password: Password }, ModalView: false })} />
                 </Item>
               </Form>
               <View style={{ flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 10 }}>
-                <Button transparent>
+                <Button transparent onPress={this.Restaurar.bind(this)}>
                   <Text style={{ color: 'white' }}>Restaurar Contraseña</Text>
                 </Button>
               </View>

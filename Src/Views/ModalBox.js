@@ -17,7 +17,7 @@ export default class ModalBox extends React.Component {
   }
   render() {
     return (
-      <Modal style={{ borderRadius: 20, shadowRadius: 20, width: Dimensions.get('window').width - 100, height: 160 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false}>
+      <Modal style={{ borderRadius: 20, shadowRadius: 20, width: Dimensions.get('window').width - 60, height: 160 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false}>
         <Header style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: '#ffff', borderColor: '#ffff' }}>
           <Item style={{ justifyContent: 'flex-end', flex: 1, flexDirection: 'row', marginRight: 15, marginTop: 5 }}>
             {this.props.Close ?
@@ -45,5 +45,5 @@ ModalBox.propTypes = {
   SpinnerComp: PropTypes.bool.isRequired,
   Close: PropTypes.bool.isRequired,
   Image: PropTypes.bool.isRequired,
-  ImageSet: PropTypes.string.isRequired
+  ImageSet: PropTypes.string.isRequired,
 }
