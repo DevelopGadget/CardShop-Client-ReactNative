@@ -1,8 +1,9 @@
 import React from 'react';
-import { Image, BackHandler } from 'react-native';
-import { Text, Icon, Header, Item, Input, Button, Content, Container, StyleProvider, Body, Left, Card, CardItem, Thumbnail, Right, View, Spinner } from 'native-base';
+import { BackHandler } from 'react-native';
+import { Icon, Header, Item, Input, Button, Content, Container, StyleProvider, View, Spinner } from 'native-base';
 import Theme from '../Themes/Tab';
 import getTheme from '../Themes/components';
+import GiftCard from './GiftCard';
 
 const _Client = require('../Firebase/Firebase');
 
@@ -10,42 +11,14 @@ export default class Cards extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { Cards: [], Elements: [], Load: false, Backup: [], Buscar: '' }
+    this.state = { Elements: [], Load: false, Backup: [], Buscar: '' }
   }
 
-  renderArray = async () => {
+  renderArray = async (Array) => {
     var Element = []
-    this.state.Cards.map((Cards, index) => {
+    Array.map((Cards, index) => {
       Cards.map((Data) => {
-        Element.push(
-          <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#222b38' }} key={index}>
-            <CardItem style={{ borderColor: '#324054', borderWidth: 0, backgroundColor: '#324054', flexDirection: 'row', justifyContent: 'space-around' }} bordered>
-              <Left>
-                <Thumbnail source={{ uri: Data.UrlIcon }} small />
-                <Text style={{ color: '#ffff' }}>GiftCard {Data.Nombre}</Text>
-              </Left>
-            </CardItem>
-            <CardItem cardBody style={{ borderColor: '#324054', borderWidth: 0 }} bordered>
-              <Image source={{ uri: 'http://www.rhinotelevisionmedia.co.uk/images/site/pound%20gift%20card.png' }} resizeMode='cover' style={{ height: 200, width: null, flex: 1 }} />
-            </CardItem>
-            <CardItem style={{ borderColor: '#324054', borderWidth: 0 }} bordered>
-              <Left style={{ borderColor: '#324054', borderWidth: 0 }}>
-                <Button transparent>
-                  <Icon active name="heart" type={'FontAwesome'} style={{ color: '#ffff' }} />
-                </Button>
-              </Left>
-              <Body style={{ flexDirection: "row", justifyContent: "center" }}>
-                <Button transparent>
-                  <Icon active name="shopping-bag" type={'FontAwesome'} style={{ color: '#ffff' }} />
-                </Button>
-              </Body>
-              <Right style={{ flexDirection: "row", justifyContent: 'flex-end' }}>
-                <Icon active name="check-circle" type={'FontAwesome'} style={{ color: '#ffff' }} />
-                <Text style={{ color: '#ffff', marginLeft: 5 }}>{Data.Disponible}</Text>
-              </Right>
-            </CardItem>
-          </Card>
-        );
+        Element.push(<GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={'http://www.thebyrdhouse.com/wp-content/uploads/2015/08/giftcard.png'} Disponible={Data.Disponible}  key={index}/>);
       })
     })
     this.setState({ Elements: Element, Load: true });
@@ -58,8 +31,8 @@ export default class Cards extends React.Component {
     await fetch('https://cards-cardshop.herokuapp.com/Usuarios')
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({ Cards: responseJson, Backup: responseJson });
-        this.renderArray();
+        this.setState({ Backup: responseJson });
+        this.renderArray(responseJson);
       })
   }
 
@@ -68,29 +41,28 @@ export default class Cards extends React.Component {
     await fetch('https://cards-cardshop.herokuapp.com/Usuarios')
       .then((response) => response.json())
       .then((responseJson) => {
-        this.setState({ Cards: responseJson, Backup: responseJson });
-        this.renderArray();
+        this.setState({ Backup: responseJson });
+        this.renderArray(responseJson);
       })
   }
 
   Buscar = async () => {
     if (this.state.Buscar.length > 0) {
-      this.setState({Load: false, Buscar: ''});
+      this.setState({ Load: false});
       var Array = [], Cards = [];
       this.state.Backup.map((item) => {
-        item.map((CardCom) =>  {
-          if(('GIFTCARD ' + CardCom.Nombre.toUpperCase() + ' ' + CardCom.Valor).includes(this.state.Buscar.toUpperCase())){
+        item.map((CardCom) => {
+          if (('GIFTCARD ' + CardCom.Nombre.toUpperCase() + ' ' + CardCom.Valor).includes(this.state.Buscar.toUpperCase())) {
             Array.push(CardCom);
           }
         })
       })
       Cards.push(Array);
-      console.log(Cards);
-      this.setState({Cards: Cards});
-      this.renderArray();
+      this.setState({ Buscar: '' });
+      this.renderArray(Cards);
     } else {
-      this.setState({ Cards: this.state.Backup, Load: false });
-      this.renderArray();
+      this.setState({Load: false });
+      this.renderArray(this.state.Backup);
     }
   }
 
@@ -99,7 +71,7 @@ export default class Cards extends React.Component {
       <Container style={{ backgroundColor: '#222b38' }}>
         <Header searchBar rounded style={{ backgroundColor: '#d93e3f' }}>
           <Item>
-            <Input placeholder="Buscar" onChangeText={(Text) => this.setState({ Buscar: Text })} value={this.state.Buscar}/>
+            <Input placeholder="Buscar" onChangeText={(Text) => this.setState({ Buscar: Text })} value={this.state.Buscar} />
             <Icon name="cards" type='MaterialCommunityIcons' style={{ color: '#d93e3f' }} />
             <Button transparent onPress={this.Update.bind(this)} active={this.state.Load}>
               <Icon name="cloud-sync" type='MaterialCommunityIcons' style={{ color: '#d93e3f' }} />
