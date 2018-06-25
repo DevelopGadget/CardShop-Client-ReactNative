@@ -3,6 +3,7 @@ import { ImageBackground, StatusBar } from 'react-native';
 import { Container, Content, Item, Icon, Input, Form, Button, Text, Spinner, View } from 'native-base';
 import ModalBox from '../Views/ModalBox';
 
+const Cont = require('../Firebase/Controller');
 const _Client = require('../Firebase/Firebase');
 
 export default class Login extends React.Component {
@@ -12,7 +13,15 @@ export default class Login extends React.Component {
   }
   componentDidMount() {
     StatusBar.setHidden(true);
+    _Client.Auth.onAuthStateChanged((User) => {
+      if (User) {
+        if (User.emailVerified) {
+          this.setState({ ModalTexto: 'Logueado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+        }
+      }
+    });
   }
+
   async componentWillMount() {
     await Expo.Font.loadAsync({
       'Roboto': require('native-base/Fonts/Roboto.ttf'),
@@ -27,14 +36,18 @@ export default class Login extends React.Component {
       this.setState({ ModalTexto: 'Se requieren los campos', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
     } else {
       this.setState({ ModalTexto: 'Espere validando ingreso...', ModalView: true, ModalImage: false });
-      _Client.Auth.signInWithEmailAndPassword(this.state.User.Email, this.state.User.Password).then((User) => {
-        if(User.user.emailVerified){
-          this.setState({ ModalTexto: 'Logueado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
-        }else{
-          this.setState({ ModalTexto: 'Se necesita estar verificado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
-        }
+      _Client.Auth.setPersistence(_Client.Firebase.auth.Auth.Persistence.LOCAL).then(() => {
+        _Client.Auth.signInWithEmailAndPassword(this.state.User.Email, this.state.User.Password).then((User) => {
+          if (User.user.emailVerified) {
+            this.setState({ ModalTexto: 'Logueado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+          } else {
+            this.setState({ ModalTexto: 'Se necesita estar verificado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
+          }
+        }).catch((error) => {
+          this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
+        })
       }).catch((error) => {
-        console.log(error.message);
+        this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
       })
     }
   }
