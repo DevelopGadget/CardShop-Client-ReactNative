@@ -3,20 +3,20 @@ import { ImageBackground, StatusBar } from 'react-native';
 import { Container, Content, Item, Icon, Input, Form, Button, Text, Spinner, View } from 'native-base';
 import ModalBox from '../Views/ModalBox';
 
-const Cont = require('../Firebase/Controller');
 const _Client = require('../Firebase/Firebase');
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Font: false, User: { Email: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: '' };
+    this.state = { Font: false, User: { Email: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: ''};
   }
   componentDidMount() {
     StatusBar.setHidden(true);
     _Client.Auth.onAuthStateChanged((User) => {
       if (User) {
         if (User.emailVerified) {
-          this.setState({ ModalTexto: 'Logueado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+          console.log(User.email);
+          this.props.navigation.push('Principal')
         }
       }
     });
@@ -39,7 +39,7 @@ export default class Login extends React.Component {
       _Client.Auth.setPersistence(_Client.Firebase.auth.Auth.Persistence.LOCAL).then(() => {
         _Client.Auth.signInWithEmailAndPassword(this.state.User.Email, this.state.User.Password).then((User) => {
           if (User.user.emailVerified) {
-            this.setState({ ModalTexto: 'Logueado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+            this.props.navigation.push('Principal')
           } else {
             this.setState({ ModalTexto: 'Se necesita estar verificado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
           }

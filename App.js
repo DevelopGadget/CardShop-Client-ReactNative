@@ -3,6 +3,7 @@ import Login from './Src/Views/Login';
 import { createStackNavigator } from 'react-navigation';
 import { ImageBackground, NetInfo, BackHandler } from 'react-native';
 import Registro from './Src/Views/Registro';
+import Principal from './Src/Views/Principal'
 
 export default class App extends React.Component {
   componentDidMount() {
@@ -53,4 +54,5 @@ const AppStackNavigation = createStackNavigator({
   Conexion: { screen: Conexion, navigationOptions: () => ({ header: null }) },
   Login: { screen: Login, navigationOptions: () => ({ header: null }) },
   Registro: { screen: Registro, navigationOptions: () => ({ header: null }) },
+  Principal: { screen: Principal, navigationOptions: () => ({ header: null }) },
 })
