@@ -8,17 +8,17 @@ const _Client = require('../Firebase/Firebase');
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Font: false, User: { Email: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: ''};
+    this.state = { Font: false, User: { Email: '', Password: '' }, ModalTexto: '', ModalView: false, ModalImage: false, ModalImageSet: '', Load: false };
   }
   componentDidMount() {
     StatusBar.setHidden(true);
     _Client.Auth.onAuthStateChanged((User) => {
       if (User) {
         if (User.emailVerified) {
-          console.log(User.email);
           this.props.navigation.push('Principal')
         }
       }
+      this.setState({ Load: true });
     });
   }
 
@@ -66,7 +66,7 @@ export default class Login extends React.Component {
   }
 
   render() {
-    if (this.state.Font) {
+    if (this.state.Font && this.state.Load) {
       return (
         <ImageBackground source={{ uri: 'https://image.ibb.co/bWnJVT/Login.png' }} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
           <Container>
