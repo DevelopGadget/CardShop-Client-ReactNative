@@ -18,7 +18,7 @@ export default class Cards extends React.Component {
     var Element = []
     Array.map((Cards, index) => {
       Cards.map((Data) => {
-        Element.push(<GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={'http://www.thebyrdhouse.com/wp-content/uploads/2015/08/giftcard.png'} Disponible={Data.Disponible}  key={index}/>);
+        Element.push(<GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible}  key={index}/>);
       })
     })
     this.setState({ Elements: Element, Load: true });

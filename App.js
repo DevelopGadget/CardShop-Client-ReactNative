@@ -28,13 +28,12 @@ export class Conexion extends React.Component {
   }
   componentDidMount() {
     NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
-    if (this.state.Frist) {
-      this.props.navigation.push('Login');
-    }
   }
   handleConnectionChange = () => {
     NetInfo.isConnected.fetch().then(isConnected => {
-      if (isConnected && this.state.Frist == false) {
+      if (this.state.Frist== true && isConnected) {
+        this.props.navigation.push('Login');
+      }else if (isConnected && this.state.Frist == false) {
         this.props.navigation.navigate('Login');
       }
       else if (!isConnected) {
