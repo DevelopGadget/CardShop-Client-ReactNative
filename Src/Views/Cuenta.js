@@ -2,6 +2,7 @@ import React from 'react';
 import { Icon, Content, Container, Text, Body, Left, Right, Thumbnail, Card, CardItem, View, StyleProvider } from 'native-base';
 import ModalBox from '../Views/ModalBox';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import ModalConfirm from './ModalConfirm';
 import Theme from '../Themes/Tab'
 import getTheme from '../Themes/components';
 
@@ -11,7 +12,7 @@ export default class Cuenta extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '' }
+    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null }
   }
 
   async componentDidMount() {
@@ -25,12 +26,17 @@ export default class Cuenta extends React.Component {
     })
   }
 
+  ModalClose = async () => {
+    this.setState({ ModalConfirm: null });
+    console.log("Hola");
+  }
+
   Restaurar = async () => {
     this.setState({ ModalTexto: 'Espere validando email', ModalView: true, ModalImage: false });
     await _Client.Auth.sendPasswordResetEmail(_Client.Auth.currentUser.email).then(() => {
-      this.setState({ ModalTexto: 'Correo enviado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png' });
+      this.setState({ ModalTexto: 'Correo enviado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png', ModalConfirm: false });
     }).catch((error) => {
-      this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
+      this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png', ModalConfirm: false });
     })
   }
 
@@ -40,10 +46,7 @@ export default class Cuenta extends React.Component {
      }).catch((error) => {
    
      }) */
-  }
-
-  AlertConfirm = async (Result, Mensaje) => {
-    alert('Confirmación', 'Esta seguro que desea ' + Mensaje, [{ text: 'Si', onPress: () => Result() }, { text: 'No' }], { cancelable: false })
+    console.log("Hola");
   }
 
   render() {
@@ -66,18 +69,10 @@ export default class Cuenta extends React.Component {
           <StyleProvider style={getTheme(Theme)}>
             <View style={{ justifyContent: 'space-between', flexDirection: 'column', flex: 1 }}>
               <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
-                <CardItem icon>
-                  <Left>
-                    <Icon active name='cards' type='MaterialCommunityIcons' style={{ color: '#ffff' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Movimientos</Text>
-                  </Left>
-                </CardItem>
-              </Card>
-              <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
                 <CardItem button icon>
                   <Left>
                     <Icon name="favorite" type='MaterialIcons' style={{ color: 'white' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Favoritos</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Favoritos</Text>
                   </Left>
                   <Right>
                     <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
@@ -88,26 +83,18 @@ export default class Cuenta extends React.Component {
                 <CardItem button icon>
                   <Left>
                     <Icon name="shopping-bag" type='Entypo' style={{ color: 'white' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Comprados</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Comprados</Text>
                   </Left>
                   <Right>
                     <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
                   </Right>
-                </CardItem>
-              </Card>
-              <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
-                <CardItem icon>
-                  <Left>
-                    <Icon name="account-settings-variant" type='MaterialCommunityIcons' style={{ color: 'white' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Cuenta</Text>
-                  </Left>
                 </CardItem>
               </Card>
               <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
                 <CardItem button icon style={{ flexDirection: 'row' }}>
-                  <Left style={{flex: 1}}>
+                  <Left style={{ flex: 1 }}>
                     <Icon name="tumblr-reblog" type='MaterialCommunityIcons' style={{ color: 'white' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Cambiar Contraseña</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Cambiar Contraseña</Text>
                   </Left>
                   <Right>
                     <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
@@ -115,10 +102,10 @@ export default class Cuenta extends React.Component {
                 </CardItem>
               </Card>
               <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
-                <CardItem button icon>
+                <CardItem button icon onPress={() => this.setState({ ModalConfirm: <ModalConfirm Confirm={this.Salir} No={this.ModalClose} Text='¿Esta seguro que desea salir?' /> })}>
                   <Left>
                     <Icon name="md-log-out" type='Ionicons' style={{ color: 'white' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Cerrar Sesión</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Cerrar Sesión</Text>
                   </Left>
                   <Right>
                     <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
@@ -129,7 +116,7 @@ export default class Cuenta extends React.Component {
                 <CardItem button icon>
                   <Left>
                     <Icon name="remove" type='FontAwesome' style={{ color: 'white' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Borrar Cuenta</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Borrar Cuenta</Text>
                   </Left>
                   <Right>
                     <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
@@ -140,7 +127,7 @@ export default class Cuenta extends React.Component {
                 <CardItem button icon>
                   <Left>
                     <Icon name="info" type='Entypo' style={{ color: 'white' }} />
-                    <Text style={{ color: 'white', fontSize: 22 }}>Sobre CardShop</Text>
+                    <Text style={{ color: 'white', fontSize: 18 }}>Sobre CardShop</Text>
                   </Left>
                   <Right>
                     <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
@@ -151,6 +138,7 @@ export default class Cuenta extends React.Component {
           </StyleProvider>
         </Content>
         {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
+        {this.state.ModalConfirm}
       </Container>
     );
   }
