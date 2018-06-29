@@ -19,34 +19,34 @@ export default class Cuenta extends React.Component {
   }
 
   Borrar = async () => {
+    this.setState({ ModalTexto: 'Espere...', ModalView: true, ModalImage: false });
     _Client.Auth.currentUser.delete().then(() => {
-
-    }).catch(() => {
-
+      this.props.navigation.push('Login');
+    }).catch((error) => {
+      this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png', ModalConfirm: false });
     })
   }
 
   ModalClose = async () => {
     this.setState({ ModalConfirm: null });
-    console.log("Hola");
   }
 
   Restaurar = async () => {
     this.setState({ ModalTexto: 'Espere validando email', ModalView: true, ModalImage: false });
     await _Client.Auth.sendPasswordResetEmail(_Client.Auth.currentUser.email).then(() => {
-      this.setState({ ModalTexto: 'Correo enviado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png', ModalConfirm: false });
+      this.setState({ ModalTexto: 'Correo enviado sesión caducada', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png', ModalConfirm: false });
     }).catch((error) => {
       this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png', ModalConfirm: false });
     })
   }
 
   Salir = async () => {
-    /* _Client.Auth.signOut().then(() => {
-   
-     }).catch((error) => {
-   
-     }) */
-    console.log("Hola");
+    this.setState({ ModalTexto: 'Espere...', ModalView: true, ModalImage: false });
+    await _Client.Auth.signOut().then(() => {
+      this.props.navigation.push('Login');
+    }).catch((error) => {
+      this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png', ModalConfirm: false });
+    })
   }
 
   render() {
@@ -91,7 +91,7 @@ export default class Cuenta extends React.Component {
                 </CardItem>
               </Card>
               <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
-                <CardItem button icon style={{ flexDirection: 'row' }}>
+                <CardItem button icon style={{ flexDirection: 'row' }} onPress={() => this.setState({ ModalConfirm: <ModalConfirm Confirm={this.Restaurar} No={this.ModalClose} Text='¿Esta seguro que desea cambiar la contraseña?' /> })}>
                   <Left style={{ flex: 1 }}>
                     <Icon name="tumblr-reblog" type='MaterialCommunityIcons' style={{ color: 'white' }} />
                     <Text style={{ color: 'white', fontSize: 18 }}>Cambiar Contraseña</Text>
@@ -113,7 +113,7 @@ export default class Cuenta extends React.Component {
                 </CardItem>
               </Card>
               <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
-                <CardItem button icon>
+                <CardItem button icon onPress={() => this.setState({ ModalConfirm: <ModalConfirm Confirm={this.Borrar} No={this.ModalClose} Text='¿Esta seguro que desea borrar la cuenta?' /> })}>
                   <Left>
                     <Icon name="remove" type='FontAwesome' style={{ color: 'white' }} />
                     <Text style={{ color: 'white', fontSize: 18 }}>Borrar Cuenta</Text>
