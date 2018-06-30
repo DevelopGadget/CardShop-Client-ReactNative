@@ -39,7 +39,7 @@ export default class Categorias extends React.Component {
     var Element = [];
     Cards.map((Data, index) => {
       Element.push(
-        <GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible} key={index} />
+        <GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible} key={index} Id={Data.Id}/>
       );
     })
     this.setState({ Load: true, Elements: Element });

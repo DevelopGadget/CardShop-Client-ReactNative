@@ -11,7 +11,8 @@ export default class App extends React.Component {
       BackHandler.exitApp();
     });
     console.ignoredYellowBox = [
-      'Setting a timer'
+      'Setting a timer',
+      '@firebase/database'
     ];
   }
   render() {
