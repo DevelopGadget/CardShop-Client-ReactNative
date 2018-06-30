@@ -12,7 +12,7 @@ export default class Cuenta extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null }
+    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Cards: [] }
   }
 
   async componentDidMount() {
@@ -48,7 +48,6 @@ export default class Cuenta extends React.Component {
       this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png', ModalConfirm: false });
     })
   }
-
   render() {
     return (
       <Container style={{ backgroundColor: '#222b38' }}>
