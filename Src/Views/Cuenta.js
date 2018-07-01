@@ -13,7 +13,8 @@ export default class Cuenta extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Favoritos: [] }
+    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false}
+    this.Favoritos = [];
   }
 
   async componentDidMount() {
@@ -25,14 +26,15 @@ export default class Cuenta extends React.Component {
   }
 
   Cards = async (Array, Id) => {
+    var Elements = [];
     _Client.Database.ref(_Client.Auth.currentUser.uid + '/' + Id).once('value', (data) => {
       data.forEach(value => {
-        Array.map((item) => {
-          item.map((Data) => {
-            if (Data.Id === value.val()) {
-              this.setState({Favoritos: this.state.Favoritos.push(Data)});
-            }
-          })
+        Array.some(item => {
+          var Filter = item.filter(Data => { return Data.Id === value.val() });
+          if (Filter[0] !== undefined) {
+            this.Favoritos.push(Filter[0]);
+            return Filter[0];
+          }
         })
       })
     });
@@ -76,7 +78,7 @@ export default class Cuenta extends React.Component {
   render() {
     if (this.state.Select) {
       return (
-        <CardsComp Array={this.state.Favoritos} Back={this.Back} />
+        <CardsComp Array={this.Favoritos} Back={this.Back} />
       );
     } else {
       return (
