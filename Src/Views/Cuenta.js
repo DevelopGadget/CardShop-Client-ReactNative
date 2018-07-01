@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Content, Container, Text, Body, Left, Right, Thumbnail, Card, CardItem, View, StyleProvider } from 'native-base';
+import { Icon, Content, Container, Text, Body, Left, Right, Thumbnail, Card, CardItem, View, StyleProvider, Spinner } from 'native-base';
 import ModalBox from '../Views/ModalBox';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import ModalConfirm from './ModalConfirm';
@@ -13,7 +13,7 @@ export default class Cuenta extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false}
+    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Load: false }
     this.Favoritos = [];
   }
 
@@ -21,18 +21,18 @@ export default class Cuenta extends React.Component {
     await fetch('https://cards-cardshop.herokuapp.com/Usuarios')
       .then((response) => response.json())
       .then((responseJson) => {
-        this.Cards(responseJson, 'Favoritos');
+        this.Cards(responseJson, 'Favoritos', this.Favoritos);
       })
   }
 
-  Cards = async (Array, Id) => {
-    var Elements = [];
-    _Client.Database.ref(_Client.Auth.currentUser.uid + '/' + Id).once('value', (data) => {
+  Cards = async (Array, Id, Push) => {
+    _Client.Database.ref(_Client.Auth.currentUser.uid + '/' + Id).on('value', (data) => {
+      Push.length = 0;
       data.forEach(value => {
         Array.some(item => {
           var Filter = item.filter(Data => { return Data.Id === value.val() });
           if (Filter[0] !== undefined) {
-            this.Favoritos.push(Filter[0]);
+            Push.push(Filter[0]);
             return Filter[0];
           }
         })

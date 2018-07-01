@@ -14,7 +14,7 @@ export default class GiftCard extends React.Component {
 
   Favorito = async () => {
     if (this.state.Favorito) {
-      await _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).once("child_added", (data) => {
+      _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).once('child_added', (data) => {
         data.ref.remove().then(() => {
           this.setState({ Favorito: false, Color: 'white' });
         })
@@ -26,8 +26,8 @@ export default class GiftCard extends React.Component {
     }
   }
 
-  async componentDidMount() {
-    await _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).once("child_added", (data) => {
+  componentDidMount() {
+    _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).once('child_added', (data) => {
       this.setState({ Favorito: true, Color: 'red' });
     });
   }
