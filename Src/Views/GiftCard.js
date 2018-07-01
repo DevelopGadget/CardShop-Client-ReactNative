@@ -9,27 +9,26 @@ export default class GiftCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { Favorito: false, Color: 'white' }
+    this.state = { Favorito: false, Color: 'white', Ref: null }
   }
 
   Favorito = async () => {
     if (this.state.Favorito) {
-      _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).once('child_added', (data) => {
-        data.ref.remove().then(() => {
-          this.setState({ Favorito: false, Color: 'white' });
-        })
-      });
+      this.state.Ref.remove();
     } else {
-      await _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').push(this.props.Id).then(() => {
-        this.setState({ Favorito: true, Color: 'red' });
-      })
+      await _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').push(this.props.Id);
     }
   }
-
-  componentDidMount() {
-    _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).once('child_added', (data) => {
-      this.setState({ Favorito: true, Color: 'red' });
+  async componentDidMount() {
+    this.Eventos();
+  }
+  Eventos = () => {
+    _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).on('child_added', (Snap) => {
+      this.setState({ Favorito: true, Color: 'red', Ref: Snap.ref });
     });
+    _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).on('child_removed', data => {
+      this.setState({ Favorito: false, Color: 'white', Ref: null });
+    })
   }
 
   render() {

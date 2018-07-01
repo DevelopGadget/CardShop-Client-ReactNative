@@ -15,6 +15,7 @@ export default class Cuenta extends React.Component {
     super(props);
     this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Load: false }
     this.Favoritos = [];
+    this.Url = '';
   }
 
   async componentDidMount() {
@@ -22,6 +23,10 @@ export default class Cuenta extends React.Component {
       .then((response) => response.json())
       .then((responseJson) => {
         this.Cards(responseJson, 'Favoritos', this.Favoritos);
+      })
+      _Client.Firebase.storage().ref('Images/Hola.jpg').getDownloadURL().then((url) => {
+        console.log(url);
+        this.Url = url;
       })
   }
 
@@ -81,12 +86,13 @@ export default class Cuenta extends React.Component {
         <CardsComp Array={this.Favoritos} Back={this.Back} />
       );
     } else {
+      console.log(this.Url);
       return (
         <Container style={{ backgroundColor: '#222b38' }}>
           <Content>
             <Grid style={{ backgroundColor: '#b33b3c', flex: 1 }} >
               <Col style={{ justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 10 }} size={1}>
-                <Thumbnail source={{ uri: 'https://image.flaticon.com/icons/png/512/126/126317.png' }} large />
+                <Thumbnail source={{ uri: this.Url }} large />
               </Col>
               <Col style={{ justifyContent: 'center', marginBottom: 10, marginTop: 10 }} size={2}>
                 <Row>
