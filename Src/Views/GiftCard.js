@@ -2,8 +2,7 @@ import React from 'react';
 import { Image } from 'react-native';
 import { Text, Icon, Button, Body, Left, Card, CardItem, Thumbnail, Right } from 'native-base';
 import PropTypes from 'prop-types';
-
-const _Client = require('../Firebase/Firebase');
+import { Database, Auth } from '../Firebase/Firebase';
 
 export default class GiftCard extends React.Component {
 
@@ -16,17 +15,23 @@ export default class GiftCard extends React.Component {
     if (this.state.Favorito) {
       this.state.Ref.remove();
     } else {
-      await _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').push(this.props.Id);
+      await Database.ref(Auth.currentUser.uid + '/Favoritos').push(this.props.Id);
     }
   }
+
   async componentDidMount() {
     this.Eventos();
   }
+
+  Pagos = async () => {
+
+  }
+
   Eventos = () => {
-    _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).on('child_added', (Snap) => {
+    Database.ref(Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).on('child_added', (Snap) => {
       this.setState({ Favorito: true, Color: 'red', Ref: Snap.ref });
     });
-    _Client.Database.ref(_Client.Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).on('child_removed', data => {
+    Database.ref(Auth.currentUser.uid + '/Favoritos').orderByValue().equalTo(this.props.Id).on('child_removed', data => {
       this.setState({ Favorito: false, Color: 'white', Ref: null });
     })
   }
@@ -50,7 +55,7 @@ export default class GiftCard extends React.Component {
             </Button>
           </Left>
           <Body style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Button transparent>
+            <Button transparent onPress={this.Pagos.bind(this)}>
               <Icon active name="shopping-bag" type={'FontAwesome'} style={{ color: '#ffff' }} />
             </Button>
           </Body>

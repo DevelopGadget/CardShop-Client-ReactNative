@@ -24,10 +24,6 @@ export default class Cuenta extends React.Component {
       .then((responseJson) => {
         this.Cards(responseJson, 'Favoritos', this.Favoritos);
       })
-      _Client.Firebase.storage().ref('Images/Hola.jpg').getDownloadURL().then((url) => {
-        console.log(url);
-        this.Url = url;
-      })
   }
 
   Cards = async (Array, Id, Push) => {
@@ -92,7 +88,7 @@ export default class Cuenta extends React.Component {
           <Content>
             <Grid style={{ backgroundColor: '#b33b3c', flex: 1 }} >
               <Col style={{ justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 10 }} size={1}>
-                <Thumbnail source={{ uri: this.Url }} large />
+                <Thumbnail source={{ uri: 'https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-512.png' }} large />
               </Col>
               <Col style={{ justifyContent: 'center', marginBottom: 10, marginTop: 10 }} size={2}>
                 <Row>

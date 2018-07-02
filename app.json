@@ -19,8 +19,15 @@
     },
     "android": {
       "package": "com.cardshop.cardshop",
-      "versionCode": 1
+      "versionCode": 1,
+      "publishBundlePath": "android\\app\\src\\main\\assets\\shell-app.bundle",
+      "publishManifestPath": "android\\app\\src\\main\\assets\\shell-app-manifest.json"
     },
-    "slug": "CardShop"
+    "slug": "CardShop",
+    "isDetached": true,
+    "detach": {
+      "androidExpoViewUrl": "https://s3.amazonaws.com/exp-exponent-view-code/android-v2.6.3-sdk28.0.0-ff4c68c7-a4ac-4d59-8d54-b71d06704ee0.tar.gz"
+    },
+    "scheme": "exp70911fbfba5d4842ab88e04fe987aaa5"
   }
 }
