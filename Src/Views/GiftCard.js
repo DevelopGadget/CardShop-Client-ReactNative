@@ -1,14 +1,15 @@
 import React from 'react';
-import { Image } from 'react-native';
+import { Image, WebView } from 'react-native';
 import { Text, Icon, Button, Body, Left, Card, CardItem, Thumbnail, Right } from 'native-base';
 import PropTypes from 'prop-types';
 import { Database, Auth } from '../Firebase/Firebase';
-
+import PayPal from 'react-native-paypal-wrapper';
+ 
 export default class GiftCard extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { Favorito: false, Color: 'white', Ref: null }
+    this.state = { Favorito: false, Color: 'white', Ref: null, Link: '', Pagar: false }
   }
 
   Favorito = async () => {
@@ -24,7 +25,13 @@ export default class GiftCard extends React.Component {
   }
 
   Pagos = async () => {
-
+    PayPal.initialize(PayPal.NO_NETWORK, "AZnVu__owCURzVZifLBhhE43oYm0Gam_44ljJ1aWGBi8jbZ-NoBSJkr_lBRWEAVVFDaxrbzPMk5bgf7W");
+    PayPal.pay({
+      price: '40.70',
+      currency: 'USD',
+      description: 'Your description goes here',
+    }).then(confirm => console.log(confirm))
+      .catch(error => console.log(error));
   }
 
   Eventos = () => {
@@ -37,6 +44,9 @@ export default class GiftCard extends React.Component {
   }
 
   render() {
+    if (this.state.Pagar) {
+      return (<WebView source={{ uri: this.state.Link }} />);
+    }
     return (
       <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#222b38' }}>
         <CardItem style={{ borderColor: '#324054', borderWidth: 0, backgroundColor: '#324054', flexDirection: 'row', justifyContent: 'space-around' }} bordered>
