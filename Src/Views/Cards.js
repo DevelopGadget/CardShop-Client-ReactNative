@@ -4,6 +4,7 @@ import { Icon, Header, Item, Input, Button, Content, Container, StyleProvider, V
 import Theme from '../Themes/Tab';
 import getTheme from '../Themes/components';
 import GiftCard from './GiftCard';
+import ModalPago from './ModalPago';
 
 const _Client = require('../Firebase/Firebase');
 
@@ -11,14 +12,14 @@ export default class Cards extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { Elements: [], Load: false, Backup: [], Buscar: '' }
+    this.state = { Elements: [], Load: false, Backup: [], Buscar: '', Pagar: false }
   }
 
   renderArray = async (Array) => {
     var Element = []
     Array.map((Cards, index) => {
       Cards.map((Data) => {
-        Element.push(<GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible}  key={index} Id={Data.Id}/>);
+        Element.push(<GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible}  key={index} Id={Data.Id} Pagar={this.Pago}/>);
       })
     })
     this.setState({ Elements: Element, Load: true });
@@ -66,6 +67,14 @@ export default class Cards extends React.Component {
     }
   }
 
+  Pago = async () => {
+    this.setState({Pagar: true});
+  }
+
+  Close = async () => {
+    this.setState({Pagar: false});
+  }
+
   render() {
     return (
       <Container style={{ backgroundColor: '#222b38' }}>
@@ -88,6 +97,7 @@ export default class Cards extends React.Component {
             </View>
           </StyleProvider>
         </Content>
+        {this.state.Pagar ? <ModalPago Close={this.Close}/> : null}
       </Container>
     );
   }

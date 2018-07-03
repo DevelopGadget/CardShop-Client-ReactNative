@@ -1,9 +1,9 @@
 import React from 'react';
-import { Image, WebView, Dimensions } from 'react-native';
+import { Image } from 'react-native';
 import { Text, Icon, Button, Body, Left, Card, CardItem, Thumbnail, Right } from 'native-base';
 import PropTypes from 'prop-types';
 import { Database, Auth } from '../Firebase/Firebase';
- 
+
 export default class GiftCard extends React.Component {
 
   constructor(props) {
@@ -24,7 +24,7 @@ export default class GiftCard extends React.Component {
   }
 
   Pagos = async () => {
-    this.setState({Pagar: true})
+    
   }
 
   Eventos = () => {
@@ -37,9 +37,6 @@ export default class GiftCard extends React.Component {
   }
 
   render() {
-    if (this.state.Pagar) {
-      return (<WebView source={require('./View.html')} style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height}}/>);
-    }
     return (
       <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#222b38' }}>
         <CardItem style={{ borderColor: '#324054', borderWidth: 0, backgroundColor: '#324054', flexDirection: 'row', justifyContent: 'space-around' }} bordered>
@@ -58,7 +55,7 @@ export default class GiftCard extends React.Component {
             </Button>
           </Left>
           <Body style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Button transparent onPress={this.Pagos.bind(this)}>
+            <Button transparent onPress={this.props.Pagar.bind(this)}>
               <Icon active name="shopping-bag" type={'FontAwesome'} style={{ color: '#ffff' }} />
             </Button>
           </Body>
@@ -77,5 +74,6 @@ GiftCard.propTypes = {
   Nombre: PropTypes.string.isRequired,
   Image: PropTypes.string.isRequired,
   Disponible: PropTypes.number.isRequired,
-  Id: PropTypes.string.isRequired
+  Id: PropTypes.string.isRequired,
+  Pagar: PropTypes.func.isRequired
 }
