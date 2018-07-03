@@ -1,5 +1,5 @@
 import React from 'react';
-import { Icon, Content, Container, Text, Body, Left, Right, Thumbnail, Card, CardItem, View, StyleProvider, Spinner } from 'native-base';
+import { Icon, Content, Container, Text, Left, Right, Thumbnail, Card, CardItem, View, StyleProvider } from 'native-base';
 import ModalBox from '../Views/ModalBox';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import ModalConfirm from './ModalConfirm';
@@ -82,7 +82,6 @@ export default class Cuenta extends React.Component {
         <CardsComp Array={this.Favoritos} Back={this.Back} />
       );
     } else {
-      console.log(this.Url);
       return (
         <Container style={{ backgroundColor: '#222b38' }}>
           <Content>
