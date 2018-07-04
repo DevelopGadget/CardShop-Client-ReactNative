@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardItem, Text, Icon, Content, Right, Left, StyleProvider, Body, Container, Spinner} from 'native-base';
+import { Card, CardItem, Text, Icon, Content, Right, Left, StyleProvider, Body, Container, Spinner } from 'native-base';
 import Theme from '../Themes/Tab'
 import getTheme from '../Themes/components';
 import CardsComp from './CardsComp';
@@ -10,7 +10,7 @@ export default class Categorias extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { Elements: [], Load: false, Categoria: false, Buscar: '', Cards: [], Select: [] }
+    this.state = { Elements: [], Load: false, Categoria: false, Buscar: '', Cards: [], Select: [], Pagar: false }
   }
 
   async renderCatego() {
@@ -69,10 +69,18 @@ export default class Categorias extends React.Component {
       })
   }
 
+  Pago = async () => {
+    this.setState({ Pagar: true });
+  }
+
+  Close = async () => {
+    this.setState({ Pagar: false });
+  }
+
   render() {
     if (this.state.Categoria) {
-      return(
-        <CardsComp Array={this.state.Select} Back={this.Back}/>
+      return (
+        <CardsComp Array={this.state.Select} Back={this.Back} />
       );
     } else {
       return (
@@ -82,6 +90,7 @@ export default class Categorias extends React.Component {
               {this.state.Load ? this.state.Elements : <Spinner color='red' size='large' />}
             </Content>
           </StyleProvider>
+          {this.state.Pagar ? <ModalPago Close={this.Close} /> : null}
         </Container>
       );
     }

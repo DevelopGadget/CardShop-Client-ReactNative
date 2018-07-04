@@ -13,7 +13,7 @@ export default class Cuenta extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Load: false }
+    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Load: false, Pagar: false }
     this.Favoritos = [];
     this.Url = '';
   }
@@ -52,6 +52,14 @@ export default class Cuenta extends React.Component {
 
   ModalClose = async () => {
     this.setState({ ModalConfirm: null });
+  }
+
+  Pago = async () => {
+    this.setState({ Pagar: true });
+  }
+
+  Close = async () => {
+    this.setState({ Pagar: false });
   }
 
   Restaurar = async () => {
@@ -171,6 +179,7 @@ export default class Cuenta extends React.Component {
           </Content>
           {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
           {this.state.ModalConfirm}
+          {this.state.Pagar ? <ModalPago Close={this.Close} /> : null}
         </Container>
       );
     }
