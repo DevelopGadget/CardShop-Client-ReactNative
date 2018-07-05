@@ -1,21 +1,23 @@
 import React from 'react';
-import { Icon, Content, Container, Text, Left, Right, Thumbnail, Card, CardItem, View, StyleProvider } from 'native-base';
+import { Dimensions } from 'react-native';
+import { Icon, Content, Container, Text, Left, Right, Thumbnail, Card, CardItem, View, StyleProvider, Header, Button, Item } from 'native-base';
 import ModalBox from '../Views/ModalBox';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import ModalConfirm from './ModalConfirm';
 import Theme from '../Themes/Tab'
 import getTheme from '../Themes/components';
 import CardsComp from './CardsComp';
+import Modal from 'react-native-modalbox';
 
 const _Client = require('../Firebase/Firebase');
+const Avatars = ['https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-512.png', 'https://cdn0.iconfinder.com/data/icons/halloween-avatars/1024/Capt_Spaulding-01.png', 'https://cdn0.iconfinder.com/data/icons/halloween-avatars/1024/Zombie-01.png', 'https://cdn0.iconfinder.com/data/icons/halloween-avatars/1024/Zombie_PVZ-01.png', 'https://cdn4.iconfinder.com/data/icons/avatar-vol-1-3/512/5-512.png', 'https://cdn4.iconfinder.com/data/icons/monsters-vol-2/512/8-512.png'];
 
 export default class Cuenta extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Load: false, Pagar: false }
+    this.state = { ModalView: false, ModalImage: false, ModalImageSet: '', ModalTexto: '', ModalConfirm: null, Select: false, Load: false }
     this.Favoritos = [];
-    this.Url = '';
   }
 
   async componentDidMount() {
@@ -54,14 +56,6 @@ export default class Cuenta extends React.Component {
     this.setState({ ModalConfirm: null });
   }
 
-  Pago = async () => {
-    this.setState({ Pagar: true });
-  }
-
-  Close = async () => {
-    this.setState({ Pagar: false });
-  }
-
   Restaurar = async () => {
     this.setState({ ModalTexto: 'Espere validando email', ModalView: true, ModalImage: false });
     await _Client.Auth.sendPasswordResetEmail(_Client.Auth.currentUser.email).then(() => {
@@ -95,7 +89,7 @@ export default class Cuenta extends React.Component {
           <Content>
             <Grid style={{ backgroundColor: '#b33b3c', flex: 1 }} >
               <Col style={{ justifyContent: 'center', marginBottom: 10, marginTop: 10, marginLeft: 10 }} size={1}>
-                <Thumbnail source={{ uri: 'https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-512.png' }} large />
+                <Thumbnail source={{ uri: _Client.Auth.currentUser.photoURL }} large />
               </Col>
               <Col style={{ justifyContent: 'center', marginBottom: 10, marginTop: 10 }} size={2}>
                 <Row>
@@ -124,6 +118,17 @@ export default class Cuenta extends React.Component {
                     <Left>
                       <Icon name="shopping-bag" type='Entypo' style={{ color: 'white' }} />
                       <Text style={{ color: 'white', fontSize: 18 }}>Comprados</Text>
+                    </Left>
+                    <Right>
+                      <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
+                    </Right>
+                  </CardItem>
+                </Card>
+                <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
+                  <CardItem button icon style={{ flexDirection: 'row' }} onPress={() => this.refs.Modal.open()}>
+                    <Left style={{ flex: 1 }}>
+                      <Icon name="users" type='FontAwesome' style={{ color: 'white' }} />
+                      <Text style={{ color: 'white', fontSize: 18 }}>Cambiar Avatar</Text>
                     </Left>
                     <Right>
                       <Icon name="hand-o-right" type='FontAwesome' style={{ color: '#ffff' }} />
@@ -179,7 +184,44 @@ export default class Cuenta extends React.Component {
           </Content>
           {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
           {this.state.ModalConfirm}
-          {this.state.Pagar ? <ModalPago Close={this.Close} /> : null}
+          <Modal style={{ borderRadius: 20, shadowRadius: 20, width: Dimensions.get('window').width - 60, height: 400 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false}>
+            <Header style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: '#ffff', borderColor: '#ffff' }}>
+              <Item style={{ justifyContent: 'center', flex: 1, flexDirection: 'row', marginRight: 15, marginTop: 5 }}>
+                <Text style={{ fontSize: 20 }}>Seleccione Avatar</Text>
+              </Item>
+              <Item style={{ justifyContent: 'flex-end', flex: 1, flexDirection: 'row', marginRight: 15, marginTop: 5 }}>
+                <Button iconLeft transparent onPress={() => this.refs.Modal.close()}>
+                  <Icon active type='FontAwesome' name='close' style={{ color: 'red' }} />
+                </Button>
+              </Item>
+            </Header>
+            <Grid style={{ marginTop: 20 }}>
+              <Row>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                  <Thumbnail source={{ uri: Avatars[0] }} large />
+                </Col>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                  <Thumbnail source={{ uri: Avatars[1] }} large />
+                </Col>
+              </Row>
+              <Row>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                  <Thumbnail source={{ uri: Avatars[2] }} large />
+                </Col>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                  <Thumbnail source={{ uri: Avatars[3] }} large />
+                </Col>
+              </Row>
+              <Row>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                  <Thumbnail source={{ uri: Avatars[4] }} large />
+                </Col>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                  <Thumbnail source={{ uri: Avatars[5] }} large />
+                </Col>
+              </Row>
+            </Grid>
+          </Modal>
         </Container>
       );
     }

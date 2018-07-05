@@ -16,8 +16,8 @@ export default class ModalPago extends React.Component {
   }
   render() {
     return (
-      <Modal style={{ borderRadius: 20, shadowRadius: 20, width: Dimensions.get('window').width - 40, height: Dimensions.get('window').height - 100 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false} onClosed={this.props.Close.bind(this)}>
-        <Header style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: '#ffff', borderColor: '#ffff' }}>
+      <Modal style={{ width: Dimensions.get('window').width - 40, height: Dimensions.get('window').height - 100 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false} onClosed={this.props.Close.bind(this)}>
+        <Header style={{ backgroundColor: '#ffff', borderColor: '#ffff' }}>
           <Item style={{ justifyContent: 'flex-end', flex: 1, flexDirection: 'row', marginRight: 15, marginTop: 5 }}>
             <Button iconLeft transparent onPress={() => this.refs.Modal.close()}>
               <Icon active type='FontAwesome' name='close' style={{ color: 'red' }} />

@@ -4,18 +4,19 @@ import PropTypes from 'prop-types';
 import Theme from '../Themes/Tab'
 import getTheme from '../Themes/components';
 import GiftCard from './GiftCard';
+import ModalPago from './ModalPago';
 
 export default class CardsComp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Buscar: '', Elements: [], Load: false }
+    this.state = { Buscar: '', Elements: [], Load: false, Pagar: false }
   }
 
   GiftCards = async (Cards) => {
     var Element = [];
     Cards.map((Data, index) => {
       Element.push(
-        <GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible} key={index} Id={Data.Id} />
+        <GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible} key={index} Id={Data.Id} Pagar={this.Pago}/>
       );
     })
     this.setState({ Load: true, Elements: Element });
@@ -23,6 +24,15 @@ export default class CardsComp extends React.Component {
 
   async componentDidMount() {
     this.GiftCards(this.props.Array);
+  }
+
+
+  Pago = async () => {
+    this.setState({ Pagar: true });
+  }
+
+  Close = async () => {
+    this.setState({ Pagar: false });
   }
 
   Buscar = async () => {
@@ -59,6 +69,7 @@ export default class CardsComp extends React.Component {
             {this.state.Load ? this.state.Elements : <Spinner color='red' size='large' />}
           </Content>
         </StyleProvider>
+        {this.state.Pagar ? <ModalPago Close={this.Close} /> : null}
       </Container>
     );
   }

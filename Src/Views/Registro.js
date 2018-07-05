@@ -18,7 +18,7 @@ export default class Registro extends React.Component {
     } else {
       this.setState({ ModalTexto: 'Espere...', ModalView: true, ModalImage: false });
       await _Client.Auth.createUserWithEmailAndPassword(this.state.User.Email, this.state.User.Password).then(() => {
-        _Client.Auth.currentUser.updateProfile({ displayName: this.state.User.Nombre + ' ' + this.state.User.Apellido }).then(() => {
+        _Client.Auth.currentUser.updateProfile({ displayName: this.state.User.Nombre + ' ' + this.state.User.Apellido, photoURL: 'https://cdn1.iconfinder.com/data/icons/ninja-things-1/1772/ninja-512.png' }).then(() => {
           _Client.Auth.currentUser.sendEmailVerification().then(() => {
             this.setState({ ModalTexto: 'Revise su email para la verificación', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png', User: { Nombre: '', Apellido: '', Email: '', Password: '' } });
           })

@@ -3,6 +3,7 @@ import { Dimensions } from 'react-native';
 import Modal from 'react-native-modalbox';
 import { Icon, Text, Spinner, Button, Thumbnail, Header, Item } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
+import PropTypes from 'prop-types';
 
 export default class ModalBox extends React.Component {
   constructor(props) {

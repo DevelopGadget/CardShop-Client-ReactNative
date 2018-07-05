@@ -10,7 +10,7 @@ export default class Categorias extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { Elements: [], Load: false, Categoria: false, Buscar: '', Cards: [], Select: [], Pagar: false }
+    this.state = { Elements: [], Load: false, Categoria: false, Buscar: '', Cards: [], Select: [] }
   }
 
   async renderCatego() {
@@ -69,14 +69,6 @@ export default class Categorias extends React.Component {
       })
   }
 
-  Pago = async () => {
-    this.setState({ Pagar: true });
-  }
-
-  Close = async () => {
-    this.setState({ Pagar: false });
-  }
-
   render() {
     if (this.state.Categoria) {
       return (
@@ -90,7 +82,6 @@ export default class Categorias extends React.Component {
               {this.state.Load ? this.state.Elements : <Spinner color='red' size='large' />}
             </Content>
           </StyleProvider>
-          {this.state.Pagar ? <ModalPago Close={this.Close} /> : null}
         </Container>
       );
     }
