@@ -43,6 +43,16 @@ export default class Cuenta extends React.Component {
     });
   }
 
+  Avatar = async (index) => {
+    this.refs.Modal.close();
+    this.setState({ ModalTexto: 'Espere...', ModalView: true, ModalImage: false });2
+    await _Client.Auth.currentUser.updateProfile({ photoURL: Avatars[index] }).then(() => {
+      this.setState({ ModalTexto: 'Avatar cambiado', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png', ModalConfirm: false });
+    }).catch((error) => {
+      this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png', ModalConfirm: false });
+    })
+  }
+
   Borrar = async () => {
     this.setState({ ModalTexto: 'Espere...', ModalView: true, ModalImage: false });
     _Client.Auth.currentUser.delete().then(() => {
@@ -197,26 +207,26 @@ export default class Cuenta extends React.Component {
             </Header>
             <Grid style={{ marginTop: 20 }}>
               <Row>
-                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }} onPress={this.Avatar.bind(this, 0)}>
                   <Thumbnail source={{ uri: Avatars[0] }} large />
                 </Col>
-                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }} onPress={this.Avatar.bind(this, 1)}>
                   <Thumbnail source={{ uri: Avatars[1] }} large />
                 </Col>
               </Row>
               <Row>
-                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }} onPress={this.Avatar.bind(this, 2)}>
                   <Thumbnail source={{ uri: Avatars[2] }} large />
                 </Col>
-                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }} onPress={this.Avatar.bind(this, 3)}>
                   <Thumbnail source={{ uri: Avatars[3] }} large />
                 </Col>
               </Row>
               <Row>
-                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }} onPress={this.Avatar.bind(this, 4)}>
                   <Thumbnail source={{ uri: Avatars[4] }} large />
                 </Col>
-                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }}>
+                <Col style={{ flex: 1, justifyContent: 'center', flexDirection: 'row' }} onPress={this.Avatar.bind(this, 5)}>
                   <Thumbnail source={{ uri: Avatars[5] }} large />
                 </Col>
               </Row>
