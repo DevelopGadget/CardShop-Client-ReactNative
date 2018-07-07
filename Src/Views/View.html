@@ -1,28 +1,32 @@
-<div style="margin: auto; left: 0; right: 0; top: 0; bottom: 0; position: absolute; display: inline; align-items: center">
-  <p>Para confirmar presione</p>
+<div style="margin: 200px; position: absolute; display: inline; align-items: center">
+  <p>Para continuar presione</p>
   <div id="paypal-button"></div>
 </div>
 <script src="https://www.paypalobjects.com/api/checkout.js"></script>
 <script>
   paypal.Button.render({
-    env: 'sandbox',
+    env: 'production',
     client: {
-      sandbox: 'demo_sandbox_client_id'
+      sandbox: 'AVQx_luQWduTNNaI4UqnGstxP_0SAZFSSl9qQabwT3FS2fCAOFV8PedBGeSlN3USHn6ruk4cjAnAY8nA',
+      production: 'AXJGzpvw5v4maBSG9pHqoxyn0ffldJqAy_pRDgb5PA8h4F_F2WsYr4MN6mDj0WWPaCH_Zy6sCstLA2Tk'
     },
     payment: function (data, actions) {
       return actions.payment.create({
         transactions: [{
           amount: {
-            total: '0.01',
+            total: '0.20',
             currency: 'USD'
           }
         }]
       });
     },
+    onCancel: function (data) {
+      console.log('The payment was cancelled!');
+    },
     onAuthorize: function (data, actions) {
       return actions.payment.execute()
         .then(function () {
-          window.alert('Thank you for your purchase!');
+          console.log('Thank you for your purchase!');
         });
     }
   }, '#paypal-button');
