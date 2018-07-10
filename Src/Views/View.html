@@ -1,33 +1,54 @@
-<div style="margin: 200px; position: absolute; display: inline; align-items: center">
-  <p>Para continuar presione</p>
-  <div id="paypal-button"></div>
-</div>
-<script src="https://www.paypalobjects.com/api/checkout.js"></script>
-<script>
-  paypal.Button.render({
-    env: 'production',
-    client: {
-      sandbox: 'AVQx_luQWduTNNaI4UqnGstxP_0SAZFSSl9qQabwT3FS2fCAOFV8PedBGeSlN3USHn6ruk4cjAnAY8nA',
-      production: 'AXJGzpvw5v4maBSG9pHqoxyn0ffldJqAy_pRDgb5PA8h4F_F2WsYr4MN6mDj0WWPaCH_Zy6sCstLA2Tk'
-    },
-    payment: function (data, actions) {
-      return actions.payment.create({
-        transactions: [{
-          amount: {
-            total: '0.20',
-            currency: 'USD'
-          }
-        }]
-      });
-    },
-    onCancel: function (data) {
-      console.log('The payment was cancelled!');
-    },
-    onAuthorize: function (data, actions) {
-      return actions.payment.execute()
-        .then(function () {
-          console.log('Thank you for your purchase!');
+<html lang="es">
+
+<head>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/css/materialize.min.css">
+  <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+</head>
+
+<body>
+  <script>
+    $(document).ready(function () {
+      $('#Cantidad').keyup(function (e) {
+        if (isNaN(this.value + String.fromCharCode(e.charCode)) || e.charCode === 32) {
+          return false;
+        }
+      })
+        .on("cut copy paste", function (e) {
+          e.preventDefault();
         });
-    }
-  }, '#paypal-button');
-</script>
+      $('input#Cantidad').characterCounter();
+      document.getElementById("Cantidad").defaultValue = "1";
+      paypal.Button.render({
+        env: 'production', client: {
+          sandbox: 'AVQx_luQWduTNNaI4UqnGstxP_0SAZFSSl9qQabwT3FS2fCAOFV8PedBGeSlN3USHn6ruk4cjAnAY8nA',
+          production: 'AXJGzpvw5v4maBSG9pHqoxyn0ffldJqAy_pRDgb5PA8h4F_F2WsYr4MN6mDj0WWPaCH_Zy6sCstLA2Tk'
+        }, payment: function (data,
+          actions) { return actions.payment.create({ transactions: [{ amount: { total: '0.20', currency: 'USD' } }] }); }, onCancel:
+          function (data) { console.log('The payment was cancelled!'); }, onAuthorize: function (data, actions) {
+            return actions.payment.execute()
+              .then(function () { console.log('Thank you for your purchase!'); });
+          }
+      }, '#Boton');
+    });
+  </script>
+  <div class="container" style="position: absolute; top: 0; bottom: 0; left: 0; right: 0; display: flex; align-items: center">
+    <div class="col center-align" style="flex: 1; flex-direction: row; align-items: center">
+      <div class="row center-align">
+        <div class="input-field s6">
+          <i class="material-icons prefix">card_giftcard</i>
+          <input id="Cantidad" type="number" class="validate" data-length="3" maxlength="3" minlength="1" min="1">
+          <label for="Cantidad">Cantidad</label>
+        </div>
+      </div>
+      <div class="row center-align">
+        <div id="Boton"></div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
