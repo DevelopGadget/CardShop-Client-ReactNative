@@ -12,7 +12,8 @@
 <body>
   <script>
     $(document).ready(function () {
-      $('#Cantidad').keyup(function (e) {
+      document.getElementById("Cantidad").focus();
+      $('#Cantidad').keypress(function (e) {
         if (isNaN(this.value + String.fromCharCode(e.charCode)) || e.charCode === 32) {
           return false;
         }
@@ -23,15 +24,31 @@
       $('input#Cantidad').characterCounter();
       document.getElementById("Cantidad").defaultValue = "1";
       paypal.Button.render({
-        env: 'production', client: {
+        env: 'production',
+        client: {
           sandbox: 'AVQx_luQWduTNNaI4UqnGstxP_0SAZFSSl9qQabwT3FS2fCAOFV8PedBGeSlN3USHn6ruk4cjAnAY8nA',
           production: 'AXJGzpvw5v4maBSG9pHqoxyn0ffldJqAy_pRDgb5PA8h4F_F2WsYr4MN6mDj0WWPaCH_Zy6sCstLA2Tk'
-        }, payment: function (data,
-          actions) { return actions.payment.create({ transactions: [{ amount: { total: '0.20', currency: 'USD' } }] }); }, onCancel:
-          function (data) { console.log('The payment was cancelled!'); }, onAuthorize: function (data, actions) {
-            return actions.payment.execute()
-              .then(function () { console.log('Thank you for your purchase!'); });
-          }
+        },
+        commit: true,
+        payment: function (data, actions) {
+          var N = document.getElementById("Cantidad").value;
+          return actions.payment.create({
+            transactions: [{
+              amount: {
+                total: 0.3 * (document.getElementById("Cantidad").value ? document.getElementById("Cantidad").value : 1),
+                currency: 'USD',
+              },
+              description: 'The payment transaction description.',
+            }]
+          });
+        },
+        onCancel: function (data) {
+          console.log(data);
+        },
+        onAuthorize: function (data, actions) {
+          return actions.payment.execute()
+            .then(function () { console.log('Thank you for your purchase!'); });
+        }
       }, '#Boton');
     });
   </script>
