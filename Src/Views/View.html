@@ -31,7 +31,6 @@
         },
         commit: true,
         payment: function (data, actions) {
-          var N = document.getElementById("Cantidad").value;
           return actions.payment.create({
             transactions: [{
               amount: {
@@ -43,11 +42,11 @@
           });
         },
         onCancel: function (data) {
-          console.log(data);
+          window.postMessage("FALSE");
         },
         onAuthorize: function (data, actions) {
           return actions.payment.execute()
-            .then(function () { console.log('Thank you for your purchase!'); });
+            .then(function () { window.postMessage("TRUE"); });
         }
       }, '#Boton');
     });

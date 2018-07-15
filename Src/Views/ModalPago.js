@@ -14,6 +14,9 @@ export default class ModalPago extends React.Component {
   componentDidUpdate() {
     this.refs.Modal.open();
   }
+  Mensajes = async (e) => {
+    console.log(e);
+  }
   render() {
     return (
       <Modal style={{ width: Dimensions.get('window').width - 40, height: Dimensions.get('window').height - 100 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false} onClosed={this.props.Close.bind(this)}>
@@ -24,7 +27,7 @@ export default class ModalPago extends React.Component {
             </Button>
           </Item>
         </Header>
-        <WebView source={require('./View.html')} />
+        <WebView source={require('./View.html')} onMessage={this.Mensajes.bind(this)}/>
       </Modal>
     );
   }
