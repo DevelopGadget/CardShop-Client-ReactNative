@@ -7,6 +7,7 @@
   <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0-rc.2/js/materialize.min.js"></script>
   <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 </head>
 
 <body>
@@ -37,16 +38,21 @@
                 total: 0.3 * (document.getElementById("Cantidad").value ? document.getElementById("Cantidad").value : 1),
                 currency: 'USD',
               },
-              description: 'The payment transaction description.',
             }]
           });
         },
         onCancel: function (data) {
-          window.postMessage("FALSE");
+          setTimeout(() => {
+            swal("Cancelado", "La compra ha sido cancelada", "error");
+          }, 1000)
         },
         onAuthorize: function (data, actions) {
           return actions.payment.execute()
-            .then(function () { window.postMessage("TRUE"); });
+            .then(function () {
+              setTimeout(() => {
+                swal("Compra exitosa", "Espere la confirmación de la compra y se enviara al correo", "success");
+              }, 1000);
+            });
         }
       }, '#Boton');
     });

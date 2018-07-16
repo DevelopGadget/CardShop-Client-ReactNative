@@ -5,19 +5,25 @@ import Modal from 'react-native-modalbox';
 import PropTypes from 'prop-types';
 
 export default class ModalPago extends React.Component {
+
   constructor(props) {
     super(props);
   }
+
   componentDidMount() {
     this.refs.Modal.open();
   }
+
   componentDidUpdate() {
     this.refs.Modal.open();
   }
+
   Mensajes = async (e) => {
     console.log(e);
   }
+  
   render() {
+    const jsCode = `window.postMessage('test');`;
     return (
       <Modal style={{ width: Dimensions.get('window').width - 40, height: Dimensions.get('window').height - 100 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false} onClosed={this.props.Close.bind(this)}>
         <Header style={{ backgroundColor: '#ffff', borderColor: '#ffff' }}>
@@ -27,7 +33,7 @@ export default class ModalPago extends React.Component {
             </Button>
           </Item>
         </Header>
-        <WebView source={require('./View.html')} onMessage={this.Mensajes.bind(this)}/>
+        <WebView source={require('./View.html')} onMessage={this.Mensajes.bind(this)} onLoadStart={() => this.refs.WebView.postMessage("TRUE")} ref={(web) => this.refs.WebView = web} injectedJavaScript={jsCode}/>
       </Modal>
     );
   }
