@@ -12,14 +12,14 @@ export default class Cards extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { Elements: [], Load: false, Backup: [], Buscar: '', Pagar: false }
+    this.state = { Elements: [], Load: false, Backup: [], Buscar: '', Pagar: false, Index : 0 }
   }
 
   renderArray = async (Array) => {
     var Element = []
     Array.map((Cards, index) => {
       Cards.map((Data) => {
-        Element.push(<GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible}  key={index} Id={Data.Id} Pagar={this.Pago}/>);
+        Element.push(<GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible}  key={index} Id={Data.Id} Pagar={this.Pago} Index={index}/>);
       })
     })
     this.setState({ Elements: Element, Load: true });
@@ -67,8 +67,9 @@ export default class Cards extends React.Component {
     }
   }
 
-  Pago = async () => {
-    this.setState({Pagar: true});
+  Pago = async (index) => {
+    console.log(index);
+    this.setState({Index: index, Pagar: true});
   }
 
   Close = async () => {
@@ -97,7 +98,7 @@ export default class Cards extends React.Component {
             </View>
           </StyleProvider>
         </Content>
-        {this.state.Pagar ? <ModalPago Close={this.Close}/> : null}
+        {this.state.Pagar ? <ModalPago Close={this.Close} Precio={this.state.Backup[this.state.Index].Valor}/> : null}
       </Container>
     );
   }

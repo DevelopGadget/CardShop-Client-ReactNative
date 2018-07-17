@@ -9,14 +9,14 @@ import ModalPago from './ModalPago';
 export default class CardsComp extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { Buscar: '', Elements: [], Load: false, Pagar: false }
+    this.state = { Buscar: '', Elements: [], Load: false, Pagar: false, Index : 0 }
   }
 
   GiftCards = async (Cards) => {
     var Element = [];
     Cards.map((Data, index) => {
       Element.push(
-        <GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible} key={index} Id={Data.Id} Pagar={this.Pago}/>
+        <GiftCard Nombre={Data.Nombre} UrlIcon={Data.UrlIcon} Image={Data.UrlCard} Disponible={Data.Disponible} key={index} Id={Data.Id} Pagar={this.Pago} Index={index}/>
       );
     })
     this.setState({ Load: true, Elements: Element });
@@ -27,8 +27,8 @@ export default class CardsComp extends React.Component {
   }
 
 
-  Pago = async () => {
-    this.setState({ Pagar: true });
+  Pago = async (index) => {
+    this.setState({Index: index, Pagar: true});
   }
 
   Close = async () => {
@@ -69,7 +69,7 @@ export default class CardsComp extends React.Component {
             {this.state.Load ? this.state.Elements : <Spinner color='red' size='large' />}
           </Content>
         </StyleProvider>
-        {this.state.Pagar ? <ModalPago Close={this.Close} /> : null}
+        {this.state.Pagar ? <ModalPago Close={this.Close} Precio={this.props.Array[this.state.Index].Valor}/> : null}
       </Container>
     );
   }

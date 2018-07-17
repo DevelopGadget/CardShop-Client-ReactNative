@@ -55,7 +55,7 @@ export default class GiftCard extends React.Component {
             </Button>
           </Left>
           <Body style={{ flexDirection: "row", justifyContent: "center" }}>
-            <Button transparent onPress={this.props.Pagar.bind(this)}>
+            <Button transparent onPress={this.props.Pagar.bind(this, this.props.Index)}>
               <Icon active name="shopping-bag" type={'FontAwesome'} style={{ color: '#ffff' }} />
             </Button>
           </Body>
@@ -75,5 +75,6 @@ GiftCard.propTypes = {
   Image: PropTypes.string.isRequired,
   Disponible: PropTypes.number.isRequired,
   Id: PropTypes.string.isRequired,
-  Pagar: PropTypes.func.isRequired
+  Pagar: PropTypes.func.isRequired,
+  Index: PropTypes.number.isRequired,
 }
