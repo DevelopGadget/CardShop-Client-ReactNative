@@ -19,10 +19,11 @@ export default class ModalPago extends React.Component {
   }
 
   Mensajes = async (e) => {
-    console.log(e.nativeEvent.data);
+    console.log(e);
   }
   
   render() {
+    console.log(this.props.Precio)
     const jsCode = `window.postMessage('${this.props.Precio}');`;
     return (
       <Modal style={{ width: Dimensions.get('window').width - 40, height: Dimensions.get('window').height - 100 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false} onClosed={this.props.Close.bind(this)}>
@@ -33,7 +34,7 @@ export default class ModalPago extends React.Component {
             </Button>
           </Item>
         </Header>
-        <WebView source={require('./View.html')} onMessage={this.Mensajes.bind(this)} ref={(web) => this.refs.WebView = web} injectedJavaScript={jsCode} javaScriptEnabled={true} />
+        <WebView source={require('./View.html')} onMessage={this.Mensajes.bind(this)}/>
       </Modal>
     );
   }

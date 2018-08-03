@@ -113,7 +113,7 @@ export default class Cuenta extends React.Component {
             <StyleProvider style={getTheme(Theme)}>
               <View style={{ justifyContent: 'space-between', flexDirection: 'column', flex: 1 }}>
                 <Card style={{ borderWidth: 0, borderRadius: 10, borderColor: '#324054', backgroundColor: '#324054' }}>
-                  <CardItem button icon onPress={() => this.setState({ Select: true })}>
+                  <CardItem button={this.Favoritos.length >= 1} icon onPress={() => this.setState({ Select: true })}>
                     <Left>
                       <Icon name="favorite" type='MaterialIcons' style={{ color: 'white' }} />
                       <Text style={{ color: 'white', fontSize: 18 }}>Favoritos</Text>
