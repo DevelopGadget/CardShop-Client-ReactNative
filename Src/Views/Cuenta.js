@@ -63,7 +63,7 @@ export default class Cuenta extends React.Component {
   }
 
   ModalClose = async () => {
-    this.setState({ ModalConfirm: null });
+    this.setState({ ModalConfirm: null, ModalView: false });
   }
 
   Restaurar = async () => {
@@ -192,7 +192,7 @@ export default class Cuenta extends React.Component {
               </View>
             </StyleProvider>
           </Content>
-          {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
+          {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} CloseFun={this.ModalClose}/> : null}
           {this.state.ModalConfirm}
           <Modal style={{ borderRadius: 20, shadowRadius: 20, width: Dimensions.get('window').width - 60, height: 400 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false}>
             <Header style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: '#ffff', borderColor: '#ffff' }}>

@@ -31,6 +31,10 @@ export default class Login extends React.Component {
     this.setState({ Font: true });
   }
 
+  ModalClose = () => {
+    this.setState({ModalView: false})
+  }
+
   Login = async () => {
     if (this.state.User.Email.length <= 0 || this.state.User.Password.length <= 0) {
       this.setState({ ModalTexto: 'Se requieren los campos', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png' });
@@ -96,7 +100,7 @@ export default class Login extends React.Component {
               </View>
             </Content>
           </Container>
-          {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
+          {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} CloseFun={this.ModalClose}/> : null}
         </ImageBackground>
       );
     } else {

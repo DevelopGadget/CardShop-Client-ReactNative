@@ -15,13 +15,17 @@ export default class ModalBox extends React.Component {
   componentDidUpdate() {
     this.refs.Modal.open();
   }
+  Close = () => {
+    this.props.CloseFun();
+    this.refs.Modal.close();
+  }
   render() {
     return (
       <Modal style={{ borderRadius: 20, shadowRadius: 20, width: Dimensions.get('window').width - 60, height: 160 }} position={"center"} ref={"Modal"} isDisabled={false} backdropPressToClose={false} swipeToClose={false}>
         <Header style={{ borderTopLeftRadius: 20, borderTopRightRadius: 20, backgroundColor: '#ffff', borderColor: '#ffff' }}>
           <Item style={{ justifyContent: 'flex-end', flex: 1, flexDirection: 'row', marginRight: 15, marginTop: 5 }}>
             {this.props.Close ?
-              (<Button iconLeft transparent onPress={() => this.refs.Modal.close()}>
+              (<Button iconLeft transparent onPress={this.Close()}>
                 <Icon active type='FontAwesome' name='close' style={{ color: 'red' }} />
               </Button>) : null}
           </Item>
@@ -46,4 +50,5 @@ ModalBox.propTypes = {
   Close: PropTypes.bool.isRequired,
   Image: PropTypes.bool.isRequired,
   ImageSet: PropTypes.string.isRequired,
+  CloseFun: PropTypes.func.isRequired
 }

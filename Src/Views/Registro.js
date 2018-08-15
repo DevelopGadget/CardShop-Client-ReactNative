@@ -29,6 +29,10 @@ export default class Registro extends React.Component {
     }
   }
 
+  ModalClose = () => {
+    this.setState({ ModalView: false });
+  }
+
   render() {
     return (
       <ImageBackground source={{ uri: 'https://image.ibb.co/bWnJVT/Login.png' }} resizeMode='cover' style={{ width: '100%', height: '100%' }}>
@@ -60,7 +64,7 @@ export default class Registro extends React.Component {
                 <Text style={{ color: 'white' }}>Login</Text>
               </Button>
             </View>
-            {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} /> : null}
+            {this.state.ModalView ? <ModalBox Text={this.state.ModalTexto} SpinnerComp={!this.state.ModalImage} Close={this.state.ModalImage} Image={this.state.ModalImage} ImageSet={this.state.ModalImageSet} CloseFun={this.ModalClose} /> : null}
           </Content>
         </Container>
       </ImageBackground>
