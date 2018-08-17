@@ -98,7 +98,7 @@ export default class Cards extends React.Component {
             </View>
           </StyleProvider>
         </Content>
-        {this.state.Pagar ? <ModalPago Close={this.Close} Precio={this.state.Backup[this.state.Index].Valor}/> : null}
+        {this.state.Pagar ? <ModalPago Close={this.Close} Precio={this.state.Backup[this.state.Index][0].Valor}/> : null}
       </Container>
     );
   }

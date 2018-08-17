@@ -70,6 +70,7 @@ export default class Cuenta extends React.Component {
     this.setState({ ModalTexto: 'Espere validando email', ModalView: true, ModalImage: false });
     await _Client.Auth.sendPasswordResetEmail(_Client.Auth.currentUser.email).then(() => {
       this.setState({ ModalTexto: 'Correo enviado sesión caducada', ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678134-sign-check-512.png', ModalConfirm: false });
+      this.props.navigation.push('Login');
     }).catch((error) => {
       this.setState({ ModalTexto: error.message, ModalImage: true, ModalView: true, ModalImageSet: 'https://cdn0.iconfinder.com/data/icons/small-n-flat/24/678069-sign-error-512.png', ModalConfirm: false });
     })
